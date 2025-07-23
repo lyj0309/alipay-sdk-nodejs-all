@@ -233,8 +233,10 @@ export class AlipaySdk {
     if (item[item.length - 1].includes(type)) {
       item.pop();
     }
-
-    return `-----BEGIN ${type}-----\n${item.join('')}\n-----END ${type}-----`;
+    const base64String = item.join('');
+    // 每 64 个字符后加上换行
+    const formattedBase64 = base64String.match(/.{1,64}/g).join("\n");
+    return `-----BEGIN ${type}-----\n${formattedBase64}\n-----END ${type}-----`;
   }
 
   // 格式化请求 url（按规范把某些固定的参数放入 url）
